@@ -6,6 +6,7 @@ import Recipes from "../components/Recipes";
 import Box from "@mui/material/Box";
 import AppContext from "../components/AppContext";
 import Nav from "../components/Nav";
+import Router from 'next/router'
 
 const RecipeReviewCard: NextPage = props => {
   const [recipes, setRecipes] = React.useState([]);
@@ -13,7 +14,7 @@ const RecipeReviewCard: NextPage = props => {
   const { id, direction, siteTitle} = value.state.languages;
 
   const getRecipes = () => {
-    axios({ url: "recipes/"+id, method: "get" }).then((response) => {
+    axios({ url: "recipes/", method: "get" }).then((response) => {
       if (response && response?.data?.success === true) {
         setRecipes(response?.data?.result);
       }
@@ -21,8 +22,15 @@ const RecipeReviewCard: NextPage = props => {
   }
   
   const htmlContent = React.useMemo(getRecipes, [id])
+
   React.useEffect(()=> htmlContent, [id])
 
+  React.useEffect(()=>{
+    const {pathname} = Router
+    if(pathname == '/' ){
+       Router.push('/en/recipes')
+    }
+  },[])
 
   return (
     <div>
@@ -35,7 +43,8 @@ const RecipeReviewCard: NextPage = props => {
       <Box sx={{
         margin:'0 auto',
         width:'70%',
-        padding:10
+        padding:10,
+        direction:direction
       }}>
         {recipes?.length &&
           recipes.map((recipe) => <Recipes key={recipe.id} recipe={recipe} />)}
