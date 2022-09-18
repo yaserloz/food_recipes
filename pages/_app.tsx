@@ -1,21 +1,33 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import axios from 'axios';
-import React from 'react';
+import React, { useEffect } from 'react';
 import AppContext from '../components/AppContext';
+import { setCookie, getCookie } from 'cookies-next';
 
-axios.defaults.baseURL = 'http://localhost:5002/api/v1/';
+axios.defaults.baseURL = 'http://192.168.1.57:5000/api/v1/';
 
 // axios.defaults.withCredentials = true;
 
 // axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+MyApp.getInitialProps  = async ({ req, res }) => {
+    // Get a cookie
+    // Set a cookie
+    
+    return {coo:getCookie("lang")}
+}
 function MyApp({ Component, pageProps }: AppProps) {
-  const [languageSelected, setLanguageSelected] = React.useState("en");
+  console.log(getCookie("lang"))
+  const [languageSelected, setLanguageSelected] = React.useState();
+  useEffect(() => {
+    getCookie("lang") ? setLanguageSelected(getCookie("lang")) : setLanguageSelected(en)
+}, []);
   let languagesObject = {
     en: {
       id:2,
       direction:"ltr",
+      languageLableName:'English',
       navbarAboutLink: "About",
       navbarContactLink: "Contact",
       homeTitle: "Home",
@@ -27,13 +39,14 @@ function MyApp({ Component, pageProps }: AppProps) {
       emailLabel: "Email",
       phoneLabel: "Phone",
       inputSearchPlaceHolder:"Search",
-      siteTitle:"Iraqi recipes",
-      languageLabel:"Languages"
+      siteTitle:"Recipes",
+      languageLable:"Languages"
 
     },
     ar: {
       direction:"rtl",
       id:1,
+      languageLableName:'العربية',
       navbarAboutLink: "Sobre",
       navbarContactLink: "Contacto",
       homeTitle: "Hogar",
@@ -45,17 +58,19 @@ function MyApp({ Component, pageProps }: AppProps) {
       emailLabel: "Correo electrónico",
       phoneLabel: "Teléfono",
       inputSearchPlaceHolder:"ابحث",
-      siteTitle:"وصفات عراقية",
+      siteTitle:"وصفات",
       languageLabel:"اللغات"
     },
   };
+
+  axios.defaults.headers.common['lang'] = languagesObject[languageSelected]?.id ||  languagesObject["en"].id// for all requests
 
   return (
 
     <AppContext.Provider
     value={{
       state: {
-        languages: languagesObject[languageSelected],
+        languages: languagesObject[languageSelected] || languagesObject["en"] ,
         languageSelected: languageSelected,
       },
       setLanguageSelected: setLanguageSelected,

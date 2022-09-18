@@ -14,7 +14,9 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import React from "react";
+import React, { useContext } from "react";
+import AppContext from "./AppContext";
+import Link from "next/link";
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -33,7 +35,15 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 const Recipes = (props) => {
   const [expanded, setExpanded] = React.useState(false);
+  const [idn, setidn] = React.useState(false);
 
+  const value = useContext(AppContext);
+  const { id, direction, siteTitle} = value.state.languages;
+  console.log("12", idn)
+
+  React.useEffect(()=> {
+    setidn(id)
+  }, [id])
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
@@ -51,10 +61,10 @@ const Recipes = (props) => {
             <MoreVertIcon />
           </IconButton>
         }
-        title={<a href={`/recipe/${props.recipe.id}`}>{props.recipe.title} </a>}
+        // title={<Link  href={`/recipe/1/`}><a>{props.recipe.title}</a> </Link >}
         subheader={props.recipe.created_at}
       />
-      <a href="qsqdsd">
+      <a href={`/recipe/${props.recipe.id}`}>
       <CardMedia
         component="img"
         height="194"

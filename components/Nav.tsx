@@ -78,9 +78,9 @@ export default function Nav() {
             {siteTitle}
           </Typography>
           <Search>
-            <SearchIconWrapper>
+            {/* <SearchIconWrapper>
               <SearchIcon/>
-            </SearchIconWrapper>
+            </SearchIconWrapper> */}
             <StyledInputBase
               placeholder={inputSearchPlaceHolder}
               inputProps={{ "aria-label": inputSearchPlaceHolder }}
