@@ -4,7 +4,6 @@ import { getCookie } from 'cookies-next'
 
 export function middleware(request: NextRequest) {   
   const url = request.nextUrl.clone()   
-  console.log(request)
   if (url.pathname === '/') {
     const lang = request.cookies.get("lang") ?? 'en'
     url.pathname = '/'+lang+'/recipes'
