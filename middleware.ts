@@ -6,7 +6,8 @@ export function middleware(request: NextRequest) {
   const url = request.nextUrl.clone()   
   console.log(request)
   if (url.pathname === '/') {
-    url.pathname = '/'+request.cookies.get("lang")+'/recipes'
+    const lang = request.cookies.get("lang") ?? 'en'
+    url.pathname = '/'+lang+'/recipes'
     return NextResponse.redirect(url)   
   } 
 }

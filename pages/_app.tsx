@@ -21,7 +21,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   console.log(getCookie("lang"))
   const [languageSelected, setLanguageSelected] = React.useState();
   useEffect(() => {
-    getCookie("lang") ? setLanguageSelected(getCookie("lang")) : setLanguageSelected(en)
+    getCookie("lang") ? setLanguageSelected(getCookie("lang")) : setLanguageSelected('en')
 }, []);
   let languagesObject = {
     en: {
